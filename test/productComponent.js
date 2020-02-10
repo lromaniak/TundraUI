@@ -43,17 +43,13 @@ describe('Product Component', () => {
 
     await searchPage.performSearch('mantle');
     await searchPage.checkResults('43 results for mantle');
-
-    await searchPage.selectFreeShipping();
-    await searchPage.verifyAllProductsHasFreeShipping();
   });
 
   it('Filter Products by Free Shipping', async () => {
     const searchPage = new SearchPage(page);
-
     await searchPage.performSearch('jelly');
 
-    await searchPage.selectFreeShipping();
+    await searchPage.filterFreeShipping();
     await searchPage.verifyAllProductsHasFreeShipping();
   });
 
@@ -66,7 +62,6 @@ describe('Product Component', () => {
     await loginDialog.logIn();
 
     await searchPage.performSearch('leather bag');
-
     await searchPage.sortByLowestPrice();
     await searchPage.checkIfPricesAreSorted();
   });
@@ -96,4 +91,78 @@ describe('Product Component', () => {
     await productDetailsPage.priceIsVisible();
   });
 
+  it('Filtered product has Gold Plus Guarantee badge', async () => {
+    const loginDialog = new LoginDialog(page);
+    const searchPage = new SearchPage(page);
+
+    await loginDialog.openDialog();
+    await loginDialog.enterCredentials('test-tundra.bnc2vaxu@mailosaur.io', 'Testing!123');
+    await loginDialog.logIn();
+    await searchPage.performSearch('mantle');
+
+    await searchPage.filterGoldPlusGuarantee();
+    await searchPage.productHasGoldPlusGuarantee();
+    await searchPage.productHasNotGoldGuarantee();
+    await searchPage.productIsNotOnSale();
+  });
+
+  it('Filtered product has Gold Guarantee badge', async () => {
+    const loginDialog = new LoginDialog(page);
+    const searchPage = new SearchPage(page);
+
+    await loginDialog.openDialog();
+    await loginDialog.enterCredentials('test-tundra.bnc2vaxu@mailosaur.io', 'Testing!123');
+    await loginDialog.logIn();
+    await searchPage.performSearch('shoes');
+
+    await searchPage.filterGoldGuarantee();
+    await searchPage.productHasNotGoldPlusGuarantee();
+    await searchPage.productIsNotOnSale();
+  });
+
+  it('Filtered product has On Sale label', async () => {
+    const loginDialog = new LoginDialog(page);
+    const searchPage = new SearchPage(page);
+
+    await loginDialog.openDialog();
+    await loginDialog.enterCredentials('test-tundra.bnc2vaxu@mailosaur.io', 'Testing!123');
+    await loginDialog.logIn();
+
+    await searchPage.performSearch('bag');
+    await searchPage.filterOnSale();
+    await searchPage.productIsOnSale();
+  });
+
+  it('Not logged user is not able mark product as favourite and add product to card', async () => {
+    const searchPage = new SearchPage(page);
+    await searchPage.performSearch('jelly');
+
+    await searchPage.markAsFavouriteIsNotVisible();
+    await searchPage.productAmountSelectorIsNotVisible();
+    await searchPage.buttonAddToCardIsNotVisible();
+    await searchPage.buttonChooseOptionsIsNotVisible();
+
+    await searchPage.productHasPicture();
+    await searchPage.productHasName();
+    await searchPage.productHasSupplier();
+  });
+
+  it('Not logged user is not able mark product as favourite and add product to card', async () => {
+    const loginDialog = new LoginDialog(page);
+    const searchPage = new SearchPage(page);
+
+    await loginDialog.openDialog();
+    await loginDialog.enterCredentials('test-tundra.bnc2vaxu@mailosaur.io', 'Testing!123');
+    await loginDialog.logIn();
+    await searchPage.performSearch('jelly');
+
+    await searchPage.markAsFavouriteIsVisible();
+    await searchPage.productAmountSelectorIsVisible();
+    await searchPage.buttonAddToCardIsVisible();
+    await searchPage.buttonChooseOptionsIsNotVisible();
+
+    await searchPage.productHasPicture();
+    await searchPage.productHasName();
+    await searchPage.productHasSupplier();
+  });
 });
