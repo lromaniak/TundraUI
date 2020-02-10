@@ -1,10 +1,10 @@
 # TundraUI
-Install Jest and Puppeteer:
-You can do anything at <https://jestjs.io/docs/en/getting-started>
-You can do anything at <https://pptr.dev/>
+Install Jest and Puppeteer:  
+<https://jestjs.io/docs/en/getting-started>  
+<https://pptr.dev/>  
 
-`npm install --save-dev jest`
+`npm install --save-dev jest`  
 `npm i puppeteer`
 
-To run test suite, execute following command from project root folder:
+To run test suite, execute following command from project root folder:  
 `jest productComponent.js`
